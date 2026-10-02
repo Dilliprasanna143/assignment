@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Welcome Itzfizz – Scroll Hero</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<style>
+  :root { --bg:#08080c; --fg:#f4f4f5; --muted:#8b8b96; --accent:#ff7a1a; --card:rgba(255,255,255,.04); --line:rgba(255,255,255,.1); }
+  @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --bg:#08080c; } }
+  html, body { margin:0; background:var(--bg); }
+  body { color:var(--fg); font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; overflow-x:hidden; }
+  .glow { background:radial-gradient(60% 50% at 50% 38%, rgba(255,122,26,.22), transparent 70%); }
+  .road { background:repeating-linear-gradient(to bottom, rgba(255,255,255,.22) 0 40px, transparent 40px 96px); }
+  .trail { background:linear-gradient(to bottom, transparent, rgba(255,122,26,.9)); filter:blur(.5px); }
+  .speed { background:linear-gradient(to bottom, transparent, rgba(255,255,255,.35), transparent); }
+  .mask { overflow:hidden; display:inline-block; }
+  .stat { background:var(--card); border:1px solid var(--line); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+  #car, #trail, #road, .speed, .stat, .ch { will-change:transform, opacity; }
+  #bar { transform-origin:left; }
+</style>
+</head>
+<body>
+<div id="bar" class="fixed top-0 left-0 h-[3px] w-full z-50" style="background:var(--accent);transform:scaleX(0)"></div>
+
+<main id="track" style="height:450vh">
+  <section id="hero" class="relative h-screen w-full overflow-hidden">
+    <div class="glow absolute inset-0"></div>
+    <div id="road" class="road absolute left-1/2 w-[3px] opacity-50" style="top:-120%;height:340%"></div>
+    <div class="speed absolute w-px h-[40vh] left-[18%] top-[20%] opacity-0"></div>
+    <div class="speed absolute w-px h-[30vh] left-[82%] top-[40%] opacity-0"></div>
+    <div class="speed absolute w-px h-[35vh] left-[30%] top-[55%] opacity-0"></div>
+    <div class="speed absolute w-px h-[28vh] left-[70%] top-[10%] opacity-0"></div>
+
+    <p class="absolute top-6 w-full text-center text-[11px] tracking-[.45em] uppercase" style="color:var(--muted)">Impact · 2026</p>
+    <h1 id="headline" class="absolute top-[11vh] w-full text-center font-semibold uppercase px-4 leading-tight"
+        style="font-size:clamp(1.05rem,3.4vw,2.9rem);letter-spacing:.5em" aria-label="Welcome Itzfizz"></h1>
+
+    <div id="trail" class="trail absolute left-1/2 w-[6px] -ml-[3px] rounded-full" style="top:30vh;height:100vh;transform-origin:top;transform:scaleY(0)"></div>
+
+    <div id="car" class="absolute left-1/2" style="top:30vh;width:clamp(110px,15vw,190px)">
+      <div id="tilt">
+        <svg viewBox="0 0 120 260" class="w-full" style="filter:drop-shadow(0 30px 28px rgba(255,100,0,.4))" aria-hidden="true">
+          <defs>
+            <linearGradient id="b" x1="0" x2="1"><stop offset="0" stop-color="#d95a00"/><stop offset=".5" stop-color="#ff9a3c"/><stop offset="1" stop-color="#d95a00"/></linearGradient>
+            <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2f3c"/><stop offset="1" stop-color="#0c0d12"/></linearGradient>
+          </defs>
+          <g fill="#0a0a0d"><rect x="4" y="38" width="17" height="44" rx="6"/><rect x="99" y="38" width="17" height="44" rx="6"/><rect x="3" y="172" width="18" height="52" rx="6"/><rect x="99" y="172" width="18" height="52" rx="6"/></g>
+          <path d="M8 96L0 104L8 112ZM112 96L120 104L112 112Z" fill="#c24f00"/>
+          <path d="M60 3C94 3 107 30 109 70L113 192C113 238 92 257 60 257S7 238 7 192L11 70C13 30 26 3 60 3Z" fill="url(#b)"/>
+          <path d="M54 6H66V250H54Z" fill="#fff" opacity=".08"/>
+          <path d="M35 98C42 82 78 82 85 98L89 148C79 158 41 158 31 148Z" fill="url(#g)"/>
+          <path d="M37 168H83L79 214C70 221 50 221 41 214Z" fill="url(#g)"/>
+          <path d="M22 30L42 15L40 33ZM98 30L78 15L80 33Z" fill="#fff7de"/>
+          <path d="M28 236L42 240L40 248ZM92 236L78 240L80 248Z" fill="#ff2a2a"/>
+        </svg>
+      </div>
+    </div>
+
+    <div id="stats" class="absolute bottom-[6vh] left-1/2 -translate-x-1/2 w-full max-w-6xl px-5 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+      <div class="stat rounded-2xl p-4 md:p-6"><p class="text-4xl md:text-6xl font-bold tabular-nums" style="color:var(--accent)"><span data-n="58">0</span>%</p><p class="mt-2 text-xs md:text-sm" style="color:var(--muted)">Increase in pick up point use</p></div>
+      <div class="stat rounded-2xl p-4 md:p-6"><p class="text-4xl md:text-6xl font-bold tabular-nums" style="color:var(--accent)"><span data-n="23">0</span>%</p><p class="mt-2 text-xs md:text-sm" style="color:var(--muted)">Decrease in customer phone calls</p></div>
+      <div class="stat rounded-2xl p-4 md:p-6"><p class="text-4xl md:text-6xl font-bold tabular-nums" style="color:var(--accent)"><span data-n="27">0</span>%</p><p class="mt-2 text-xs md:text-sm" style="color:var(--muted)">Increase in pick up point use</p></div>
+      <div class="stat rounded-2xl p-4 md:p-6"><p class="text-4xl md:text-6xl font-bold tabular-nums" style="color:var(--accent)"><span data-n="40">0</span>%</p><p class="mt-2 text-xs md:text-sm" style="color:var(--muted)">Decrease in customer phone calls</p></div>
+    </div>
+    <p id="hint" class="absolute bottom-1.5 w-full text-center text-[10px] tracking-[.35em] uppercase" style="color:var(--muted)">Scroll</p>
+  </section>
+</main>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* 1. Smooth scrolling (Lenis) synced with GSAP's ticker */
+if (!reduce && window.Lenis) {
+  const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+
+/* 2. Headline split into masked letters */
+const h = document.getElementById("headline");
+"WELCOME ITZFIZZ".split(" ").forEach((word, i, a) => {
+  const w = document.createElement("span");
+  w.className = "inline-block whitespace-nowrap";
+  [...word].forEach(c => {
+    const m = document.createElement("span"); m.className = "mask";
+    const s = document.createElement("span"); s.className = "ch inline-block"; s.textContent = c;
+    m.appendChild(s); w.appendChild(m);
+  });
+  h.appendChild(w);
+  if (i < a.length - 1) h.appendChild(document.createTextNode(" "));
+});
+
+/* 3. Initial load animation */
+gsap.set("#car", { xPercent: -50, yPercent: -50 });
+const counters = [...document.querySelectorAll("[data-n]")];
+const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
+intro
+  .from(".ch", { yPercent: 110, duration: 1.1, stagger: 0.045 })
+  .from("#car", { opacity: 0, y: 90, scale: 0.8, duration: 1.4 }, "-=0.9")
+  .from(".stat", { y: 50, opacity: 0, duration: 1, stagger: 0.16 }, "-=0.8")
+  .from("#hint", { opacity: 0, duration: 0.8 }, "-=0.4");
+counters.forEach((el, i) => {
+  const o = { v: 0 };
+  gsap.to(o, { v: +el.dataset.n, duration: 1.8, delay: 1.5 + i * 0.16, ease: "power2.out",
+    onUpdate: () => (el.textContent = Math.round(o.v)) });
+});
+
+/* 4. Scroll-driven timeline: progress-tied, smoothed by scrub */
+const mm = gsap.matchMedia();
+mm.add("(prefers-reduced-motion: no-preference)", () => {
+  const H = () => innerHeight;
+  const tl = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: { trigger: "#track", start: "top top", end: "bottom bottom", scrub: 1, pin: "#hero",
+      onUpdate: s => gsap.set("#bar", { scaleX: s.progress }) }
+  });
+  tl.to("#car", { y: () => H() * 0.52, scale: 1.55, duration: 1 }, 0)
+    .to("#tilt", { rotate: 7, ease: "sine.inOut", duration: 0.3 }, 0.1)
+    .to("#tilt", { rotate: -5, ease: "sine.inOut", duration: 0.3 }, 0.4)
+    .to("#tilt", { rotate: 0, ease: "sine.inOut", duration: 0.3 }, 0.7)
+    .to("#trail", { scaleY: 0.52, duration: 1 }, 0)
+    .to("#road", { y: () => H() * 1.1, duration: 1 }, 0)
+    .to(".speed", { opacity: 0.8, y: () => H() * 0.6, stagger: 0.05, duration: 0.6 }, 0.15)
+    .to("#headline", { y: -70, opacity: 0, duration: 0.35 }, 0.05)
+    .to(".stat", { y: -14, stagger: 0.06, duration: 0.7 }, 0.3)
+    .to("#hint", { opacity: 0, duration: 0.05 }, 0);
+
+  /* 5. Subtle mouse parallax on the car (quickTo = no per-event allocations) */
+  const qx = gsap.quickTo("#car", "x", { duration: 0.8, ease: "power3.out" });
+  const move = e => qx((e.clientX / innerWidth - 0.5) * 30);
+  addEventListener("pointermove", move, { passive: true });
+  return () => removeEventListener("pointermove", move);
+});
+</script>
+</body>
+</html>
